@@ -41,7 +41,7 @@ resource "aws_instance" "backend_ec2" {
   ami             = "ami-0953476d60561c955" # Use a valid AMI ID
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.subnet.id
-  security_groups = [aws_security_group.backend_sg.name]
+  vpc_security_group_ids = [aws_security_group.backend_sg.id]
 
   user_data = <<-EOF
               #!/bin/bash
