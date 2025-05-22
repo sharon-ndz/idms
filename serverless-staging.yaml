@@ -1,0 +1,41 @@
+service: drivers-license-api
+
+package:
+  individually: true
+  include:
+    - templates
+    - public
+    - '**/**/*.ejs'
+plugins:
+  - "serverless-plugin-typescript"
+  - serverless-jetpack
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+provider:
+  name: aws
+  versionFunctions: false
+  runtime: nodejs18.x
+  stage: staging
+  region: eu-west-3
+  vpc:
+    securityGroupIds:
+      - sg-0f8e2ee55593683ed
+    subnetIds:
+      - subnet-07518c29cc78a01e2
+      - subnet-05b8f6cef3a5f161e
+
+functions:
+  main:
+    name: drivers-license-api-staging
+    handler: src/lambda.handler
+    timeout: 30
+    events:
+      - http: ANY /
+      - http: "ANY {proxy+}"
+  notification-service:
+    name: drivers-license-notification-service-queue-staging
+    timeout: 900
+    handler: src/services/notification-service/lambda.handler
+    events:
+      - sqs: arn:aws:sqs:eu-west-3:544607260651:drivers-license-notification-service-queue-staging
