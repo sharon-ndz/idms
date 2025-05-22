@@ -33,7 +33,10 @@ jobs:
           terraform apply -auto-approve
 
       - name: Get EC2 Public IP
-        run: echo "EC2_IP=$(terraform output -raw ec2_public_ip | tr -d '\r')" >> $GITHUB_ENV
+        run: |
+          terraform output -raw ec2_public_ip > ec2_ip.txt
+          echo "EC2_IP=$(cat ec2_ip.txt)" >> $GITHUB_ENV
+
 
       - name: Pull API environment variables
         run: |
