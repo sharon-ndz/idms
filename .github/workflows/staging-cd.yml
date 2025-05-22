@@ -48,6 +48,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
           cd /home/ubuntu/
+          scp -i ~/.ssh/id_rsa .env ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/.env
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ECR_URL }}
           docker pull ${{ secrets.AWS_ECR_URL }}/api:latest
           sudo docker-compose up --env-file .env -d --build
