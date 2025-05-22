@@ -26,11 +26,15 @@ jobs:
         run: |
           cd terraform
           terraform init
-
-      - name: Apply Terraform
+      - name: Plan Terraform Changes
         run: |
           cd terraform
-          terraform apply -auto-approve
+          terraform plan -out=tfplan
+          
+      - name: Apply Terraform (Only If Changes Exist)
+        run: |
+          cd terraform
+          terraform apply -auto-approve tfplan
 
       - name: Get EC2 Public IP
         run: |
