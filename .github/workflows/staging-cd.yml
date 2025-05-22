@@ -3,7 +3,7 @@ name: Build and Deploy DL API [STAGING]
 on:
   push:
     branches:
-      - staging
+      - main
 
 jobs:
   build-and-deploy:
