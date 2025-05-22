@@ -23,10 +23,14 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Initialize Terraform
-        run: terraform init
+        run: |
+          cd terraform
+          terraform init
 
       - name: Apply Terraform
-        run: terraform apply -auto-approve
+        run: |
+          cd terraform
+          terraform apply -auto-approve
 
       - name: Get EC2 Public IP
         run: echo "EC2_IP=$(terraform output -raw ec2_public_ip)" >> $GITHUB_ENV
