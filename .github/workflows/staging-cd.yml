@@ -33,7 +33,7 @@ jobs:
           
       - name: Build and Push Docker Image
         run: |
-          docker build -t api ./docker
+          docker build -t api -f docker/Dockerfile .
           docker tag api:latest ${{ secrets.AWS_ECR_URL }}/api:latest
           docker push ${{ secrets.AWS_ECR_URL }}/api:latest
 
