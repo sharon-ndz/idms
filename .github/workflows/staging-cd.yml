@@ -18,30 +18,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-
-      - name: Initialize Terraform
-        run: |
-          cd terraform
-          terraform init
-      - name: Plan Terraform Changes
-        run: |
-          cd terraform
-          terraform plan -out=tfplan
-          
-      - name: Apply Terraform (Only If Changes Exist)
-        run: |
-          cd terraform
-          terraform apply -auto-approve tfplan
-
-      - name: Get EC2 Public IP
-        run: |
-          terraform output -raw ec2_public_ip | tr -d '\r' > ec2_ip.txt
-          echo "EC2_IP=$(cat ec2_ip.txt)" >> $GITHUB_ENV
-
-
 
       - name: Pull API environment variables
         run: |
@@ -54,8 +30,10 @@ jobs:
 
       - name: Deploy to EC2 via SSH
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ env.EC2_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
           cd /home/ubuntu/app
           git pull origin main
           sudo docker-compose up --env-file .env -d --build
           EOF
+        env:
+          EC2_IP: ${{ secrets.EC2_IP }}
