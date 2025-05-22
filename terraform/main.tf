@@ -38,7 +38,7 @@ resource "aws_security_group" "backend_sg" {
 }
 
 resource "aws_instance" "backend_ec2" {
-  ami             = "ami-0abcdef1234567890" # Use a valid AMI ID
+  ami             = "ami-0953476d60561c955" # Use a valid AMI ID
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.subnet.id
   security_groups = [aws_security_group.backend_sg.name]
