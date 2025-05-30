@@ -1,15 +1,23 @@
-- name: Get environment variables from AWS SSM
-  uses: eliasjcjunior/aws-ssm-parameters-action@1.2.2
-  with:
-    paths: "/my-app/env"
-    recursive: true
-    with-decryption: true
-    split-env: true
-    upper-case: false
-    env-prefix: ""
+name: "Fetch API Environment Variables"
+description: "Retrieves API secrets from AWS SSM and writes them to .env"
 
-- name: Save all parameters to .env file
-  run: |
-    env | grep '^AWS_' | sed -E 's/^AWS_([^=]+)=(.*)/\1=\2/' > .env
-    cat .env  # Debugging step to verify contents
-  shell: bash
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get environment variables from AWS SSM
+      uses: eliasjcjunior/aws-ssm-parameters-action@1.2.2
+      with:
+        paths: "/my-app/env"
+        recursive: true
+        with-decryption: true
+        split-env: true
+        upper-case: false
+        env-prefix: ""
+
+    - name: Save all parameters to .env file
+      run: |
+        env | grep '^AWS_' | sed -E 's/^AWS_([^=]+)=(.*)/\1=\2/' > .env
+        cat .env  # Debugging step to verify contents
+      shell: bash
+
