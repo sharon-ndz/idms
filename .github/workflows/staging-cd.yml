@@ -54,5 +54,6 @@ jobs:
             sudo apt  install docker-compose -y
           fi
           docker load < api.tar.gz
-          sudo docker-compose up -d --build
+          docker-compose down
+          docker-compose up -d --build
           EOF
