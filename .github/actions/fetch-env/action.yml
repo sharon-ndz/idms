@@ -30,10 +30,10 @@ runs:
         with-decryption: true
         split-env: true
         upper-case: false
-        env-prefix: ""
+        env-prefix: "AWS_"
 
     - name: Save all parameters to .env file
       run: |
-        env | grep '^AWS_' | sed -E 's/^AWS_([^=]+)=(.*)/\1=\2/' > .env
+        env | grep '^AWS_' | sed 's/^AWS_//' > .env
         cat .env  # Debugging step to verify contents
       shell: bash
