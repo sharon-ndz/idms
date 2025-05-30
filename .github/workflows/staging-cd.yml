@@ -1,8 +1,12 @@
 name: Build and Deploy DL API [STAGING]
 
 on:
-  push:
-  #workflow_dispatch:  # Only runs when manually triggered
+  #push:
+  workflow_dispatch:  # Only runs when manually triggered
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: "us-east-1"
 
 jobs:
   build-and-deploy:
@@ -13,11 +17,7 @@ jobs:
 
       - name: Get environment variables
         uses: ./.github/actions/fetch-env
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: "us-east-1"
-
+        
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
