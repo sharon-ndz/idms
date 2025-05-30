@@ -44,10 +44,13 @@ jobs:
           scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no api.tar.gz ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
           cd /home/ubuntu/
-          sudo apt update && sudo apt install -y docker.io
-          sudo usermod -aG docker ubuntu
-          newgrp docker
-          sudo apt  install docker-compose -y
+          if ! command -v docker &> /dev/null; then
+            echo "Docker not found, installing..."
+            sudo apt update && sudo apt install -y docker.io
+            sudo usermod -aG docker ubuntu
+            sudo systemctl restart docker
+            sudo apt  install docker-compose -y
+          fi
           docker load < api.tar.gz
           sudo docker-compose up --env-file .env -d --build
           EOF
