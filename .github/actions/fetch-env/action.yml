@@ -11,4 +11,5 @@
 - name: Save all parameters to .env file
   run: |
     env | grep '^AWS_' | sed -E 's/^AWS_([^=]+)=(.*)/\1=\2/' > .env
-    cat .env  # Optional: Debugging to verify contents
+    cat .env  # Debugging step to verify contents
+  shell: bash
