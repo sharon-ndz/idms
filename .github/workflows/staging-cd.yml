@@ -43,7 +43,7 @@ jobs:
         run: |
           scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no .env ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
           scp -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no api.tar.gz ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
-          rsync -avz -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker-compose.yml ubuntu@***:/home/ubuntu/
+          rsync -avz -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker-compose.yml ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
           cd /home/ubuntu/
           if ! command -v docker &> /dev/null; then
