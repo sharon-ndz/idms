@@ -1,8 +1,8 @@
 name: Build and Deploy DL API [STAGING]
 
 on:
-  #push:
-  workflow_dispatch:  # Only runs when manually triggered
+  push:
+  #workflow_dispatch:  # Only runs when manually triggered
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
