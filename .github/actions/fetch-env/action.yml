@@ -1,5 +1,17 @@
 name: "Fetch API Environment Variables"
 description: "Retrieves API secrets from AWS SSM and writes them to .env"
+
+inputs:
+  aws-access-key-id:
+    description: "AWS Access Key ID"
+    required: true
+  aws-secret-access-key:
+    description: "AWS Secret Access Key"
+    required: true
+  aws-region:
+    description: "AWS Region"
+    default: "us-east-1"
+
 runs:
   using: "composite"
   steps:
@@ -12,18 +24,16 @@ runs:
           sudo ./aws/install
         fi
       shell: bash
+
     - name: Configure AWS Credentials
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: "us-east-1"
       run: |
-        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-        aws configure set region $AWS_REGION
+        aws configure set aws_access_key_id ${{ inputs.aws-access-key-id }}
+        aws configure set aws_secret_access_key ${{ inputs.aws-secret-access-key }}
+        aws configure set region ${{ inputs.aws-region }}
       shell: bash
+
     - name: Pull API environment variables
       run: |
-        aws ssm get-parameter --name drivers-license-api-staging-env --output text --query Parameter.Value --region us-east-1 > .env
+        aws ssm get-parameter --name drivers-license-api-staging-env --output text --query Parameter.Value --region ${{ inputs.aws-region }} > .env
         cat .env  # Optional: Display contents for debugging
       shell: bash
