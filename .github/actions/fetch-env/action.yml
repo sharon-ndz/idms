@@ -1,0 +1,18 @@
+name: "Fetch API Environment Variables"
+description: "Retrieves API secrets from AWS SSM and writes them to .env"
+runs:
+  using: "composite"
+  steps:
+    - name: Install AWS CLI (if not available)
+      run: |
+        if ! command -v aws &> /dev/null; then
+          echo "AWS CLI not found, installing..."
+          sudo apt update && sudo apt install -y awscli
+        fi
+      shell: bash
+
+    - name: Pull API environment variables
+      run: |
+        aws ssm get-parameter --name drivers-license-api-staging-env --output text --query Parameter.Value > .env
+        cat .env  # Optional: Display contents for debugging
+      shell: bash
