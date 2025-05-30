@@ -1,13 +1,27 @@
 name: "Fetch API Environment Variables"
 description: "Retrieves API secrets from AWS SSM and writes them to .env"
-env:
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_REGION: "us-east-1"
+
+inputs:
+  aws-access-key-id:
+    description: "AWS Access Key ID"
+    required: true
+  aws-secret-access-key:
+    description: "AWS Secret Access Key"
+    required: true
+  aws-region:
+    description: "AWS Region"
+    default: "us-east-1"
 
 runs:
   using: "composite"
   steps:
+    - name: Configure AWS Credentials
+      run: |
+        aws configure set aws_access_key_id ${{ inputs.aws-access-key-id }}
+        aws configure set aws_secret_access_key ${{ inputs.aws-secret-access-key }}
+        aws configure set region ${{ inputs.aws-region }}
+      shell: bash
+
     - name: Get environment variables from AWS SSM
       uses: eliasjcjunior/aws-ssm-parameters-action@1.2.2
       with:
@@ -23,4 +37,3 @@ runs:
         env | grep '^AWS_' | sed -E 's/^AWS_([^=]+)=(.*)/\1=\2/' > .env
         cat .env  # Debugging step to verify contents
       shell: bash
-
