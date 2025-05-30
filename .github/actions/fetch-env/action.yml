@@ -13,6 +13,6 @@ runs:
 
     - name: Pull API environment variables
       run: |
-        aws ssm get-parameter --name drivers-license-api-staging-env --output text --query Parameter.Value > .env
+        aws ssm get-parameter --name drivers-license-api-staging-env --output text --query Parameter.Value --region us-east-1 > .env
         cat .env  # Optional: Display contents for debugging
       shell: bash
