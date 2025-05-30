@@ -1,6 +1,6 @@
 # Use Node.js as the base image
 FROM node:18-alpine
-RUN apt update && apt install -y postgresql-client
+RUN apk add --no-cache postgresql-client
 # Set the working directory
 WORKDIR /app
 
