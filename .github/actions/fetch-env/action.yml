@@ -8,7 +8,7 @@ runs:
     - name: Get environment variables from AWS SSM
       uses: eliasjcjunior/aws-ssm-parameters-action@1.2.2
       with:
-        paths: "/my-app/env"
+        paths: "drivers-license-api-staging-env"
         recursive: true
         with-decryption: true
         split-env: true
