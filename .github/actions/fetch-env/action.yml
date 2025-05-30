@@ -7,10 +7,21 @@ runs:
       run: |
         if ! command -v aws &> /dev/null; then
           echo "AWS CLI not found, installing..."
-          sudo apt update && sudo apt install -y awscli
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscli.zip"
+          unzip awscli.zip
+          sudo ./aws/install
         fi
       shell: bash
-
+    - name: Configure AWS Credentials
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: "us-east-1"
+      run: |
+        aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+        aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+        aws configure set region $AWS_REGION
+      shell: bash
     - name: Pull API environment variables
       run: |
         aws ssm get-parameter --name drivers-license-api-staging-env --output text --query Parameter.Value --region us-east-1 > .env
