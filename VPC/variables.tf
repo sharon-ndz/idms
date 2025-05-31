@@ -21,39 +21,31 @@ variable "instance_tenancy" {
 }
 variable "enable_dns_support" {
   type = bool
-  default = true
 }
 variable "enable_dns_hostnames" {
   type = bool
-  default = true
 }
 variable "vpc_name" {
   type = string
-  default = "my-app-vpc"
 }
 variable "vpc_cidr" {
   type = string
-  default = "10.0.0.0/16"
 }
 
 ###IGW###
 variable "internet_gateway_name" {
   type = string
-  default = "my-app-igw"
 }
 
 ###NGW###
 variable "total_nat_gateway_required" {
   type = number
-  default = 2
 }
 variable "eip_for_nat_gateway_name" {
   type = string
-  default = "my-app-nat-eip"
 }
 variable "nat_gateway_name" {
   type = string
-  default = "my-app-nat-gw"
 }
 
 ###Private LB Subnets###
