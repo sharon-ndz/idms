@@ -112,6 +112,7 @@ variable "public_subnets" {
 ##Flow Logs###
 variable "s3_endpoint_name_prefix" {
   type = string
+  default     = "my-app-flowlogs"
   description = "name of the s3 vpc endpoint"
 }
 
