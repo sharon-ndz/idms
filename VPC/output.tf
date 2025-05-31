@@ -63,3 +63,22 @@ output "services_subnets_cidrs" {
   description = "services subnets cidrs"
   value       = module.vpc.services_subnets_cidrs
 }
+
+
+
+
+
+output "api_gateway_url" {
+  description = "The URL to access the API Gateway"
+  value       = aws_apigatewayv2_api.backend_api.api_endpoint
+}
+
+output "nlb_dns_name" {
+  description = "DNS name of the Network Load Balancer"
+  value       = aws_lb.backend_nlb.dns_name
+}
+
+output "backend_instance_id" {
+  description = "EC2 instance ID for the backend application"
+  value       = aws_instance.web.id
+}
