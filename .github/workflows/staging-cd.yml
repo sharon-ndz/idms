@@ -26,6 +26,17 @@ jobs:
           cd VPC
           terraform init -backend-config="bucket=my-terraform-state-bckt"
 
+
+      - name: Terraform Plan
+        run: |
+          cd VPC
+          terraform plan -var-file=stage.tfvars
+      - name: Terraform Apply
+        run: |
+          cd VPC
+          terraform apply -auto-approve -var-file=stage.tfvars
+
+    
         
       - name: Get environment variables
         uses: ./.github/actions/fetch-env
