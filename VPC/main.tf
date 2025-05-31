@@ -1,5 +1,5 @@
 module "vpc" {
-  source                     = "git@github.com:www-domain/drivers-license-api-staging.git//vpc"
+  source                     = "git@github.com:www-domain/idms-terraform-modules.git//vpc"
 
   ###General###
   environment                = var.environment
