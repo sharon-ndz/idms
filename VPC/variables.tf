@@ -61,10 +61,10 @@ variable "private_lb_subnets" {
 ###Private App Subnets###
 variable "private_app_subnets" {
   type = object({
-    routes              = ["10.0.0.0/16"]            # Route to main VPC CIDR
-    cidrs_blocks        = ["10.0.3.0/24", "10.0.4.0/24"] # Define subnet CIDR ranges
-    subnets_name_prefix = "private-app"
-    route_table_name    = "private-app-rt"
+    routes              = list(any)
+    cidrs_blocks        = list(any)
+    subnets_name_prefix = string
+    route_table_name    = string
   })
 }
 
