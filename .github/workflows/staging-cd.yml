@@ -23,7 +23,7 @@ jobs:
 
       - name: Initialize Terraform
         run: |
-          cd ~/VPC
+          cd VPC
           terraform init -backend-config="bucket=my-tf-state-bckt"
 
         
