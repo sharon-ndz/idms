@@ -22,3 +22,10 @@ resource "aws_apigatewayv2_route" "backend_route" {
   route_key = "ANY /{proxy+}"
   target    = "integrations/${aws_apigatewayv2_integration.backend_integration.id}"
 }
+
+resource "aws_apigatewayv2_stage" "backend_stage" {
+  api_id      = aws_apigatewayv2_api.backend_api.id
+  name        = "stage"
+  auto_deploy = true
+}
+
