@@ -1,5 +1,5 @@
 module "vpc" {
-  source                     = "https://github.com/www-domain/idms-terraform-modules.git//vpc"
+  source                     = "git::https://github.com/www-domain/idms-terraform-modules.git//vpc"
 
   ###General###
   environment                = var.environment
