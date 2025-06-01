@@ -93,10 +93,20 @@ jobs:
             echo "Docker not found, installing..."
             sudo apt update && sudo apt install -y docker.io
             sudo usermod -aG docker ubuntu
-            sudo systemctl restart docker
-            sudo apt  install docker-compose -y
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            newgrp docker <<EONG
+              echo "Installing Docker Compose..."
+              sudo apt install -y docker-compose
+              docker --version
+              docker-compose --version
+              docker load < api.tar.gz
+              docker-compose down
+              docker-compose up -d --build
+          EONG
+          else
+             echo "Docker already installed."
+             docker load < api.tar.gz
+             docker-compose down
+             docker-compose up -d --build
           fi
-          docker load < api.tar.gz
-          docker-compose down
-          docker-compose up -d --build
-          EOF
