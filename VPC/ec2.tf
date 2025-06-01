@@ -1,9 +1,6 @@
 resource "aws_instance" "web" {
-<<<<<<< HEAD
   ami           = "ami-0f9de6e2d2f067fca" # Replace with correct AMI for your region
-=======
 
->>>>>>> 5213a0f (IAM role added)
   instance_type = var.instance_type
 
   subnet_id              = module.vpc.public_subnets_ids[0]
@@ -17,10 +14,8 @@ resource "aws_instance" "web" {
               sudo systemctl start amazon-ssm-agent
               EOF
   tags = {
-<<<<<<< HEAD
-    Name = "Backend API-Docker"
+    Name = "Backend API-Docker-hey"
 =======
-    Name = "Backend API2"
->>>>>>> 5213a0f (IAM role added)
+    Name = "Backend API2-HEY"
   }
 }
