@@ -42,14 +42,14 @@ jobs:
         id: extract_ip
         run: |
           cd VPC
-          IP=$(terraform output -raw ec2_public_ip 2>&1 || true)
+          IP=$(terraform output -raw instance_public_ip 2>/dev/null || echo "")
           echo "Raw Terraform Output: $IP"
-          if [[ "$IP" == *"╷"* || -z "$IP" ]]; then
-            echo "Terraform output 'ec2_public_ip' not found or failed."
-             exit 1
+          if [[ "$IP" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "EC2_IP=$IP" >> $GITHUB_ENV
+          else
+           echo "Invalid IP output: $IP"
+          exit 1
           fi
-          echo "EC2_IP=$IP" >> $GITHUB_ENV
-
 
 
 
