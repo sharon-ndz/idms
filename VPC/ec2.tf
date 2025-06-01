@@ -15,6 +15,6 @@ resource "aws_instance" "web" {
               sudo systemctl start amazon-ssm-agent
               EOF
   tags = {
-    Name = "Backend API2-HEY"
+    Name = "Backend API IDLMS"
   }
 }
