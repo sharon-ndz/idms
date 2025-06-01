@@ -1,7 +1,0 @@
-[submodule "VPC"]
-  path = VPC
-  url = git@github.com:sharon-ndz/terraform-modules.git
-
-[submodule "vpc"]
-	path = vpc
-	url = git@github.com:sharon-ndz/terraform-modules.git
