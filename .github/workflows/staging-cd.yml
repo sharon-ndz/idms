@@ -23,13 +23,13 @@ jobs:
 
       - name: Initialize Terraform
         run: |
-          cd VPC-terraform
+          cd VPC
           terraform init -backend-config="bucket=my-terraform-state-bckt"
 
 
       - name: Terraform Plan
         run: |
-          cd VPC-terraform
+          cd VPC
           terraform plan -var-file=stage.tfvars
       - name: Terraform Apply
         run: |
