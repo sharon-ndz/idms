@@ -36,6 +36,12 @@ jobs:
           cd VPC
           terraform apply -auto-approve -var-file=stage.tfvars
 
+      - name: Extract EC2 Public IP from Terraform Output
+        id: extract_ip
+        run: |
+          cd VPC
+          echo "EC2_IP=$(terraform output -raw instance_public_ip)" >> $GITHUB_ENV
+
     
         
       - name: Get environment variables
@@ -63,12 +69,12 @@ jobs:
      
       - name: Deploy to EC2 via SSH
         run: |
-          
-          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" .env ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
-          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker-compose.yml ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
-          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" api.tar.gz ubuntu@${{ secrets.EC2_IP }}:/home/ubuntu/
+          echo "Deploying to EC2 at $EC2_IP"
+          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" .env ubuntu@$EC2_IP:/home/ubuntu/
+          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker-compose.yml ubuntu@$EC2_IP:/home/ubuntu/
+          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" api.tar.gz ubuntu@$EC2_IP:/home/ubuntu/
     
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_IP }} << 'EOF'
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@$EC2_IP << 'EOF'
           cd /home/ubuntu/
           if ! command -v docker &> /dev/null; then
             echo "Docker not found, installing..."
