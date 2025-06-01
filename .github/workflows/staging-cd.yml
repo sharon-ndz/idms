@@ -33,7 +33,7 @@ jobs:
           terraform plan -var-file=stage.tfvars
       - name: Terraform Apply
         run: |
-          cd VPC-terraform
+          cd VPC
           terraform apply -auto-approve -var-file=stage.tfvars
 
     
