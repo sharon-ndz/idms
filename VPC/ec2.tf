@@ -5,6 +5,7 @@ resource "aws_instance" "web" {
   subnet_id              = module.vpc.public_subnets_ids[0]
   vpc_security_group_ids = [module.vpc.default_security_group_id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_ssm_profile.name
+  key_name               = "githubaction"
   user_data = <<-EOF
               #!/bin/bash
               sudo yum update -y
