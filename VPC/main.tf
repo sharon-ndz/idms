@@ -1,5 +1,5 @@
 module "vpc" {
-   source = ""
+   source = "git@github.com:sharon-ndz/terraform-modules.git//vpc"
 
     ###General###
   environment                = var.environment
