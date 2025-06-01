@@ -40,7 +40,13 @@ jobs:
         id: extract_ip
         run: |
           cd VPC
-          echo "EC2_IP=$(terraform output -raw instance_public_ip)" >> $GITHUB_ENV
+          IP=$(terraform output -raw instance_public_ip || true)
+          if [ -z "$IP" ]; then
+          echo "❌ Failed to get instance_public_ip from Terraform output."
+          exit 1
+          fi
+          echo "EC2_IP=$IP" >> $GITHUB_ENV
+
 
     
         
