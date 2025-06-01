@@ -1,4 +1,4 @@
-name: Build and Deploy Lincense API [STAGING]
+name: Build and Deploy License API [STAGING]
 
 on:
   push:
