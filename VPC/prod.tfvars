@@ -1,15 +1,15 @@
 ###VPC###
 enable_dns_support          = true
 enable_dns_hostnames        = true
-vpc_name                    = "prod-cfs-vpc"
+vpc_name                    = "prod-idlms-vpc"
 vpc_cidr                    = "10.120.0.0/16"
 
 ###IGW###
-internet_gateway_name       = "prod-cfs-igw"
+internet_gateway_name       = "prod-idlms-igw"
 
 ###NGW###
-eip_for_nat_gateway_name    = "prod-cfs-eip"
-nat_gateway_name            = "prod-cfs-ngw"
+eip_for_nat_gateway_name    = "prod-idlms-eip"
+nat_gateway_name            = "prod-idlms-ngw"
 
 ###Private Subnets###
 private_lb_subnets = {
