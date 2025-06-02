@@ -1,7 +1,7 @@
 ###VPC###
 enable_dns_support          = true
 enable_dns_hostnames        = true
-vpc_name                    = "dev-cfs-vpc"
+vpc_name                    = "dev-idlms-vpc"
 vpc_cidr                    = "10.121.0.0/16"
 
 ###IGW###
@@ -9,8 +9,8 @@ internet_gateway_name       = "dev-cfs-igw"
 
 ###NGW###
 total_nat_gateway_required  = 3
-eip_for_nat_gateway_name    = "dev-cfs-eip"
-nat_gateway_name            = "dev-cfs-ngw"
+eip_for_nat_gateway_name    = "dev-idlms-eip"
+nat_gateway_name            = "dev-idlms-ngw"
 
 ###Private Subnets###
 private_lb_subnets = {
