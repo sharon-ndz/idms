@@ -51,3 +51,4 @@ public_subnets = {
     "map_public_ip_on_launch": true,
     "route_table_name": "prod-public"
 }
+instance_type = "t3.medium"

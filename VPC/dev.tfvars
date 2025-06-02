@@ -52,3 +52,5 @@ public_subnets = {
     "map_public_ip_on_launch": true,
     "route_table_name": "dev-public"
 }
+
+instance_type = "t2.micro"
