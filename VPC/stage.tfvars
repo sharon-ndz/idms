@@ -36,3 +36,6 @@ private_subnets = {
   subnets_name_prefix  = "private-subnet"
   routes              = []
 }
+
+instance_type = "t3.small"
+
