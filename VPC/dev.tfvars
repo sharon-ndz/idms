@@ -53,4 +53,4 @@ public_subnets = {
     "route_table_name": "dev-public"
 }
 
-instance_type = "t2.micro"
+instance_type = "t3.small"
