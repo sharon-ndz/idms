@@ -1,5 +1,5 @@
 resource "aws_instance" "web" {
-  ami           = "ami-0f9de6e2d2f067fca" # Replace with correct AMI for your region
+  ami           = "ami-084568db4383264d4" # Replace with correct AMI for your region
   instance_type = var.instance_type
 
   subnet_id              = module.vpc.public_subnets_ids[0]

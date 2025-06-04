@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
-    container_name: ${DB_HOST}
+    container_name: postgres
     env_file:
       - .env
     environment:
@@ -21,7 +21,10 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   app:
-    image: api:latest  # Use prebuilt image
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: api:latest
     container_name: api
     restart: always
     ports:
