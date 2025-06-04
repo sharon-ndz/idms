@@ -24,7 +24,7 @@ jobs:
       - name: Initialize Terraform
         run: |
           cd infra/VPC
-          terraform init -backend-config="bucket=my-terraform-state-bckt"
+          terraform init -backend-config="bucket=my-terraform-state-bckt43"
 
 
       - name: Terraform Plan
