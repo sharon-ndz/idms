@@ -34,6 +34,11 @@ runs:
 
     - name: Pull API environment variables
       run: |
-        aws ssm get-parameter --name drivers-license-api-staging-env --output text --query Parameter.Value --region ${{ inputs.aws-region }} > .env
-        cat .env  # Debugging step to verify contents
+        aws ssm get-parameter \
+          --name drivers-license-api-staging-env \
+          --with-decryption \
+          --output text \
+          --query Parameter.Value \
+          --region ${{ inputs.aws-region }} > .env
+        echo ".env file successfully written with $(wc -l < .env) lines"
       shell: bash
