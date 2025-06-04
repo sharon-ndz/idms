@@ -2,8 +2,7 @@ name: Build and Deploy License API [STAGING]
 
 on:
   push:
-  # workflow_dispatch:  # Uncomment if you want to manually trigger
-
+  #workflow_dispatch:  # Only runs when manually triggered
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -16,25 +15,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.5.0
+          terraform_version: 1.5.0  # Update if needed
 
       - name: Initialize Terraform
         run: |
           cd infra/VPC
           terraform init -backend-config="bucket=my-terraform-state-bckt43"
 
+
       - name: Terraform Plan
         run: |
           cd infra/VPC
           terraform plan -var-file=stage.tfvars
-
       - name: Terraform Apply
         run: |
           cd infra/VPC
           terraform apply -auto-approve -var-file=stage.tfvars
+
+
 
       - name: Extract EC2 Public IP from Terraform Output
         id: extract_ip
@@ -48,8 +50,12 @@ jobs:
             echo "$RAW_OUTPUT"
             exit 1
           fi
+
           echo "✅ EC2 Public IP found: $IP"
           echo "EC2_IP=$IP" >> $GITHUB_ENV
+
+
+
 
       - name: Get environment variables
         uses: ./.github/actions/fetch-env
@@ -61,10 +67,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and Save Docker Image
+
+      - name: Build and Push Docker Image
         run: |
           docker build -t api -f docker/Dockerfile docker/
-          docker save api | gzip > docker/api.tar.gz
+          docker save api | gzip > api.tar.gz
+
 
       - name: Add SSH key
         run: |
@@ -72,10 +80,6 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      - name: Archive built API
-        run: |
-          cd docker
-          tar -czvf api.tar.gz dist
 
       - name: Deploy to EC2 via SSH
         run: |
@@ -100,12 +104,10 @@ jobs:
               docker load < api.tar.gz
               docker-compose down
               docker-compose up -d --build
-EONG
+          EONG
           else
-            echo "Docker already installed."
-            docker load < api.tar.gz
-            docker-compose down
-            docker-compose up -d --build
+             echo "Docker already installed."
+             docker load < api.tar.gz
+             docker-compose down
+             docker-compose up -d --build
           fi
-EOF
-
