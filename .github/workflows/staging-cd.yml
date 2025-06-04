@@ -2,7 +2,8 @@ name: Build and Deploy License API [STAGING]
 
 on:
   push:
-  #workflow_dispatch:  # Only runs when manually triggered
+  # workflow_dispatch:  # Uncomment if you want to manually trigger
+
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -15,28 +16,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-        
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.5.0  # Update if needed
+          terraform_version: 1.5.0
 
       - name: Initialize Terraform
         run: |
           cd infra/VPC
           terraform init -backend-config="bucket=my-terraform-state-bckt43"
 
-
       - name: Terraform Plan
         run: |
           cd infra/VPC
           terraform plan -var-file=stage.tfvars
+
       - name: Terraform Apply
         run: |
           cd infra/VPC
           terraform apply -auto-approve -var-file=stage.tfvars
-
-     
 
       - name: Extract EC2 Public IP from Terraform Output
         id: extract_ip
@@ -50,42 +48,34 @@ jobs:
             echo "$RAW_OUTPUT"
             exit 1
           fi
-    
           echo "✅ EC2 Public IP found: $IP"
           echo "EC2_IP=$IP" >> $GITHUB_ENV
 
-
-    
-        
       - name: Get environment variables
         uses: ./.github/actions/fetch-env
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: "us-east-1"
-        
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-     
-      - name: Build and Push Docker Image
+      - name: Build and Save Docker Image
         run: |
           docker build -t api -f docker/Dockerfile docker/
-          docker save api | gzip > api.tar.gz
-     
+          docker save api | gzip > docker/api.tar.gz
 
       - name: Add SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-     
 
-     - name: Archive built API
-  run: |
-    cd docker
-    tar -czvf api.tar.gz dist
-     
+      - name: Archive built API
+        run: |
+          cd docker
+          tar -czvf api.tar.gz dist
 
       - name: Deploy to EC2 via SSH
         run: |
@@ -93,7 +83,7 @@ jobs:
           rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker/.env ubuntu@$EC2_IP:/home/ubuntu/
           rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker/docker-compose.yml ubuntu@$EC2_IP:/home/ubuntu/
           rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker/api.tar.gz ubuntu@$EC2_IP:/home/ubuntu/
-    
+
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@$EC2_IP << 'EOF'
           cd /home/ubuntu/
           if ! command -v docker &> /dev/null; then
@@ -110,10 +100,12 @@ jobs:
               docker load < api.tar.gz
               docker-compose down
               docker-compose up -d --build
-          EONG
+EONG
           else
-             echo "Docker already installed."
-             docker load < api.tar.gz
-             docker-compose down
-             docker-compose up -d --build
+            echo "Docker already installed."
+            docker load < api.tar.gz
+            docker-compose down
+            docker-compose up -d --build
           fi
+EOF
+
