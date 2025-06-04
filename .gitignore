@@ -53,6 +53,14 @@ pids
 *.seed
 *.pid.lock
 
+# AWS CLI / SDK folders (prevent accidental commits)
+aws/
+.aws/
+**/awscli/
+**/botocore/
+*.egg-info/
+
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 .terraform/
 *.tfstate
