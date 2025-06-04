@@ -22,7 +22,7 @@ services:
 
   app:
     build:
-      context: ./docker
+      context: ./
       dockerfile: Dockerfile
     image: api:latest
     container_name: api
