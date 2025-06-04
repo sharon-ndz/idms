@@ -80,6 +80,13 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
      
+
+     - name: Archive built API
+  run: |
+    cd docker
+    tar -czvf api.tar.gz dist
+     
+
       - name: Deploy to EC2 via SSH
         run: |
           echo "Deploying to EC2 at $EC2_IP"
