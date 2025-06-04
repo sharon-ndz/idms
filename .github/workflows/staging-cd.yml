@@ -83,9 +83,9 @@ jobs:
       - name: Deploy to EC2 via SSH
         run: |
           echo "Deploying to EC2 at $EC2_IP"
-          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" .env ubuntu@$EC2_IP:/home/ubuntu/
-          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker-compose.yml ubuntu@$EC2_IP:/home/ubuntu/
-          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" api.tar.gz ubuntu@$EC2_IP:/home/ubuntu/
+          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker/.env ubuntu@$EC2_IP:/home/ubuntu/
+          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker/docker-compose.yml ubuntu@$EC2_IP:/home/ubuntu/
+          rsync -avz --progress -e "ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no" docker/api.tar.gz ubuntu@$EC2_IP:/home/ubuntu/
     
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ubuntu@$EC2_IP << 'EOF'
           cd /home/ubuntu/
