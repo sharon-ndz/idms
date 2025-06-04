@@ -1,0 +1,36 @@
+import { DataSource, Repository } from 'typeorm';
+import { CbtCenter } from '../../entities/cbt-center.entity';
+import { FetchMasterListDto } from '../driving-school/driving-school.dto';
+import { AuthUserInfo, DataResultInterface, RequestResultInterface } from '../../core/interfaces/all.interface';
+import { BookSlotDto, CbtCenterIdDto, CbtRescheduleDto, CbtScheduleDto, CreateCbtCenterDto, CreateQuestionDto, FetchQuestionsDto, QuestionByStudentDto, SubmitTestDto, UpdateCbtCenterDto, UpdateQuestionDto } from './cbt.dto';
+import { CbtSchedule } from '../../entities/cbt-schedule.entity';
+import { Question } from '../../entities/question.entity';
+import { Student } from '../../entities/student.entity';
+import { PaymentService } from '../payment/payment.service';
+import { AuditTrail } from '../../entities/audit-trail.entity';
+export declare class CbtService {
+    private readonly cbtCenterRepository;
+    private readonly cbtScheduleRepository;
+    private questionRepository;
+    private studentRepository;
+    private readonly auditTrailRepository;
+    private readonly paymentService;
+    private dataSource;
+    constructor(cbtCenterRepository: Repository<CbtCenter>, cbtScheduleRepository: Repository<CbtSchedule>, questionRepository: Repository<Question>, studentRepository: Repository<Student>, auditTrailRepository: Repository<AuditTrail>, paymentService: PaymentService, dataSource: DataSource);
+    getCbtCenters(data: FetchMasterListDto): Promise<DataResultInterface>;
+    createCenter(data: CreateCbtCenterDto): Promise<DataResultInterface>;
+    updateCenter(data: UpdateCbtCenterDto): Promise<DataResultInterface>;
+    getSlots(data: CbtCenterIdDto): Promise<DataResultInterface>;
+    bookSlot(data: BookSlotDto): Promise<DataResultInterface>;
+    scheduleTest(studentId: number, cbtCenterId: number, scheduleDto: CbtScheduleDto): Promise<number>;
+    getTestByStudent(data: QuestionByStudentDto): Promise<DataResultInterface>;
+    submitTest(data: SubmitTestDto): Promise<DataResultInterface>;
+    cbtEnrolls(user: AuthUserInfo): Promise<DataResultInterface>;
+    questionList(data: FetchQuestionsDto): Promise<DataResultInterface>;
+    updateQuestion(data: UpdateQuestionDto, user: AuthUserInfo): Promise<DataResultInterface>;
+    createQuestion(createQuestionDto: CreateQuestionDto, user: AuthUserInfo): Promise<DataResultInterface>;
+    getFailedAttempts(studentId: number): Promise<DataResultInterface>;
+    rescheduleCbt(data: CbtRescheduleDto): Promise<RequestResultInterface>;
+    private addDays;
+    private addMonths;
+}

@@ -1,0 +1,30 @@
+import { DataSource, QueryRunner, Repository } from "typeorm";
+import { FetchMasterListDto } from '../driving-school/driving-school.dto';
+import { AuthUserInfo, DataResultInterface } from '../../core/interfaces/all.interface';
+import { DrivingTestCenter } from '../../entities/driving-test-center.entity';
+import { DrivingTestSchedule } from '../../entities/driving-test-schedule.entity';
+import { Student } from '../../entities/student.entity';
+import { BookDrivingTestSlotDto, CreateDrivingTestCenterDto, DrivingTestCenterIdDto, DrivingTestScheduleDto, SubmitDrivingTestDto, UpdateDrivingTestCenterDto } from './driving-test.dto';
+import { PaymentService } from '../payment/payment.service';
+export declare class DrivingTestService {
+    private readonly drivingTestCenterRepository;
+    private readonly drivingTestScheduleRepository;
+    private studentRepository;
+    private readonly paymentService;
+    private dataSource;
+    constructor(drivingTestCenterRepository: Repository<DrivingTestCenter>, drivingTestScheduleRepository: Repository<DrivingTestSchedule>, studentRepository: Repository<Student>, paymentService: PaymentService, dataSource: DataSource);
+    getDrivingTestCenters(data: FetchMasterListDto): Promise<DataResultInterface>;
+    createCenter(data: CreateDrivingTestCenterDto): Promise<DataResultInterface>;
+    updateCenter(data: UpdateDrivingTestCenterDto): Promise<DataResultInterface>;
+    getSlots(data: DrivingTestCenterIdDto): Promise<DataResultInterface>;
+    bookSlot(data: BookDrivingTestSlotDto): Promise<DataResultInterface>;
+    scheduleTest(studentId: number, centerId: number, scheduleDto: DrivingTestScheduleDto): Promise<number>;
+    submitDrivingTest(data: SubmitDrivingTestDto, user: AuthUserInfo): Promise<DataResultInterface>;
+    testHistory(user: AuthUserInfo): Promise<DataResultInterface>;
+    getFailedAttempts(studentId: number): Promise<DataResultInterface>;
+    updateSchedule(scheduleId: number, data: any): Promise<void>;
+    updateScheduleWithQueryRunner(scheduleId: number, data: any, queryRunner: QueryRunner): Promise<void>;
+    findDrivingTestCenter(stateId: number, lgaId: number): Promise<DrivingTestCenter>;
+    private addDays;
+    private addMonths;
+}

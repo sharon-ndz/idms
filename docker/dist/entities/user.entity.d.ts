@@ -1,0 +1,34 @@
+import { AuditTrail } from './audit-trail.entity';
+import { Node } from './node.entity';
+import { DrivingSchool } from './driving-school.entity';
+import { FileInterface } from '../api/file/file.dto';
+export declare class User {
+    id: number;
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    phone: string;
+    email: string;
+    avatar: string;
+    address: string;
+    stateId: number;
+    lgaId: number;
+    drivingSchoolId: number;
+    roleId: number;
+    roleName: string;
+    changePasswordNextLogin: number;
+    password: string;
+    device: string;
+    lastPasswordChange: Date;
+    isActive: number;
+    files?: FileInterface[];
+    accessToken: string;
+    permissions: string;
+    auditTrails: Promise<AuditTrail[]>;
+    drivingSchool: DrivingSchool;
+    node: Node;
+    createdAt: Date;
+    updatedAt: Date;
+    hashPassword(): Promise<void>;
+    static comparePasswords(attemptedPassword: string, hashedPassword: string): Promise<boolean>;
+}

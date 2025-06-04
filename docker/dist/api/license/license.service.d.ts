@@ -1,0 +1,73 @@
+import { ApproveLicenseDto, AttachFilesDto, ExpireLicenseDto, LicenseStatsDto, LicenseStatsWithYearDto, MobileRenewalLicenseRequestDto, MobileReplaceLicenseRequestDto, NewLicenseRequestDto, PreRegistrationRequestDto, RenewalLicenseRequestDto, RenewalPreRegistrationDto, ReplaceLicenseRequestDto, UpdateLicenseDto, ValidateLicenseDto } from './license.dto';
+import { AuthUserInfo, DataResultInterface, ListInterface } from '../../core/interfaces/all.interface';
+import { DataSource, Repository } from 'typeorm';
+import { Student } from '../../entities/student.entity';
+import { CbtService } from '../cbt/cbt.service';
+import { PreRegistration } from '../../entities/pre-registration.entity';
+import { EmailNotification } from '../../entities/email-notification.entity';
+import { License } from '../../entities/license.entity';
+import { FileInterface } from '../file/file.dto';
+import { LicenseFile } from '../../entities/license-file.entity';
+import { ApplicationNoDto, LicenseNoDto } from '../../core/interfaces/all.dto';
+import { DrivingSchoolService } from '../driving-school/driving-school.service';
+import { PaymentService } from '../payment/payment.service';
+import { UsersService } from '../users/users.service';
+import { DrivingTestService } from '../driving-test/driving-test.service';
+export declare class LicenseService {
+    private readonly studentRepository;
+    private readonly preRegistrationRepository;
+    private readonly licenseRepository;
+    private readonly licenseFileRepository;
+    private readonly emailNotificationRepository;
+    private readonly cbtService;
+    private readonly drivingTestService;
+    private readonly drivingSchoolService;
+    private readonly paymentService;
+    private readonly userService;
+    private dataSource;
+    constructor(studentRepository: Repository<Student>, preRegistrationRepository: Repository<PreRegistration>, licenseRepository: Repository<License>, licenseFileRepository: Repository<LicenseFile>, emailNotificationRepository: Repository<EmailNotification>, cbtService: CbtService, drivingTestService: DrivingTestService, drivingSchoolService: DrivingSchoolService, paymentService: PaymentService, userService: UsersService, dataSource: DataSource);
+    stats(data: LicenseStatsDto, user: AuthUserInfo): Promise<DataResultInterface>;
+    findAll(data: ListInterface, user: AuthUserInfo): Promise<DataResultInterface>;
+    preRegistrations(data: ListInterface, user: AuthUserInfo): Promise<DataResultInterface>;
+    details(data: ApplicationNoDto): Promise<DataResultInterface>;
+    preRegistrationDetailsByStudent(studentId: number): Promise<DataResultInterface>;
+    detailsByLicenseNo(data: LicenseNoDto): Promise<DataResultInterface>;
+    verifyLicense(data: ValidateLicenseDto): Promise<DataResultInterface>;
+    preRegistration(data: PreRegistrationRequestDto, req: any): Promise<DataResultInterface>;
+    licenseRenewalPreRegistration(data: RenewalPreRegistrationDto, req: any): Promise<DataResultInterface>;
+    getPreRegistration(applicationNo: string): Promise<DataResultInterface>;
+    submitNewRequest(data: NewLicenseRequestDto): Promise<DataResultInterface>;
+    submitRenewalRequest(data: RenewalLicenseRequestDto, req: any): Promise<DataResultInterface>;
+    mobileSubmitRenewalRequest(data: MobileRenewalLicenseRequestDto, req: any): Promise<DataResultInterface>;
+    submitReplacementRequest(data: ReplaceLicenseRequestDto, req: any): Promise<DataResultInterface>;
+    mobileSubmitReplacementRequest(data: MobileReplaceLicenseRequestDto, req: any): Promise<DataResultInterface>;
+    approveLicense(data: ApproveLicenseDto, user: AuthUserInfo): Promise<DataResultInterface>;
+    updateLicense(data: UpdateLicenseDto): Promise<DataResultInterface>;
+    expireLicense(data: ExpireLicenseDto): Promise<DataResultInterface>;
+    buildLicensePayload(data: any, registration: PreRegistration): Promise<License>;
+    submitPreRegistrationFiles(data: AttachFilesDto): Promise<DataResultInterface>;
+    saveFileRecord(id: number, registration: PreRegistration): Promise<void>;
+    saveLicenseFileRecord(id: number, files: FileInterface[]): Promise<void>;
+    savePreRegFileRecord(id: number, files: FileInterface[]): Promise<void>;
+    getBaseRecord(files: LicenseFile[]): Promise<LicenseFile[]>;
+    getLicenseInformation(license: License): any;
+    getLicenseSummary(): Promise<{
+        totalLicense: number;
+        totalRenewed: number;
+        totalReplaced: number;
+        totalExpired: number;
+    }>;
+    getMonthlyLicenseVolume(data: LicenseStatsWithYearDto): Promise<{
+        month: number;
+        count: number;
+    }[]>;
+    getRenewalRate(startDate: Date, endDate: Date): Promise<number>;
+    getTopExpiredLicensesByLga(startDate: Date, endDate: Date): Promise<{
+        lgaId: number;
+        count: number;
+    }[]>;
+    getGenderDistribution(startDate: Date, endDate: Date): Promise<{
+        genderId: number;
+        count: number;
+    }[]>;
+}

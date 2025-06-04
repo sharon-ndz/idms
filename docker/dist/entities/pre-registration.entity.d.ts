@@ -1,0 +1,31 @@
+import { DrivingSchool } from './driving-school.entity';
+import { Student } from './student.entity';
+import { CbtCenter } from './cbt-center.entity';
+import { CbtSchedule } from './cbt-schedule.entity';
+import { User } from './user.entity';
+import { BaseEntity } from './base.entity';
+import { LicenseFile } from './license-file.entity';
+import { DrivingTestCenter } from './driving-test-center.entity';
+import { DrivingTestSchedule } from './driving-test-schedule.entity';
+export declare class PreRegistration extends BaseEntity {
+    applicationNo: string;
+    studentId: number;
+    cbtCenterId: number;
+    cbtScheduleId: number;
+    drivingSchoolId: number;
+    drivingTestCenterId: number;
+    drivingTestScheduleId: number;
+    reference: string;
+    licenseClassId: number;
+    years: number;
+    rrr: string;
+    status: number;
+    licenseFiles?: LicenseFile[];
+    drivingSchool: DrivingSchool;
+    student: Student;
+    cbtCenter: CbtCenter;
+    cbtSchedule: CbtSchedule;
+    drivingTestCenter: DrivingTestCenter;
+    drivingTestSchedule: DrivingTestSchedule;
+    createdBy: User;
+}
