@@ -39,6 +39,6 @@ runs:
           --with-decryption \
           --output text \
           --query Parameter.Value \
-          --region ${{ inputs.aws-region }} > .env
+          --region ${{ inputs.aws-region }} > docker/.env
         echo ".env file successfully written with $(wc -l < .env) lines"
       shell: bash
