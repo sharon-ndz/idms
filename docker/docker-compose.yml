@@ -22,7 +22,7 @@ services:
 
   app:
     build:
-      context: ./docker
+      context: /home/ubuntu/idms/docker/home/ubuntu/idms/docker
       dockerfile: Dockerfile
     image: api:latest
     container_name: api
