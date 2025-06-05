@@ -70,7 +70,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t api -f docker/Dockerfile docker/
+          docker build -t api -f docker/Dockerfile .
           docker save api | gzip > docker/api.tar.gz
 
 

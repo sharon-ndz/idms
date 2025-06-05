@@ -21,9 +21,6 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: api:latest
     container_name: api
     restart: always
