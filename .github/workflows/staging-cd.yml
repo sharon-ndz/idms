@@ -1,4 +1,4 @@
-name: Build and Deploy License APIee [STAGING]
+name: Build and Deploy License APIee [STGING]
 
 on:
   push:
